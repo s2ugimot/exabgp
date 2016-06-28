@@ -40,9 +40,13 @@ class Aggregator (Attribute):
 
 	def pack (self, negotiated):
 		if negotiated.asn4:
+			# Always use 4byte length for ASN if ASN4 cap is negotiated
 			return self._attribute(self.asn.pack(True)+self.speaker.pack())
 		else:
-			return self._attribute(self.asn.trans()+self.speaker.pack()) + self._attribute(self.asn.pack(True)+self.speaker.pack())
+			if self.asn.asn4():
+				return self._attribute(self.asn.trans().pack()+self.speaker.pack()) + self._attribute(Aggregator4(self.asn,self.speaker).pack())
+			else:
+				return self._attribute(self.asn.pack()+self.speaker.pack())
 
 	def __len__ (self):
 		raise RuntimeError('size can be 6 or 8 - we can not say - or can we ?')
