@@ -44,7 +44,7 @@ class Aggregator (Attribute):
 			return self._attribute(self.asn.pack(True)+self.speaker.pack())
 		else:
 			if self.asn.asn4():
-				return self._attribute(self.asn.trans().pack()+self.speaker.pack()) + self._attribute(Aggregator4(self.asn,self.speaker).pack())
+				return self._attribute(self.asn.trans().pack()+self.speaker.pack()) + Aggregator4(self.asn,self.speaker).pack(negotiated)
 			else:
 				return self._attribute(self.asn.pack()+self.speaker.pack())
 
